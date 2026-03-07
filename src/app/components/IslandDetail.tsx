@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Music, UtensilsCrossed, Shirt, Headphones, X, ArrowLeft } from "lucide-react";
 import { islands } from "./island-data";
 import type { CultureInfo } from "./island-data";
-import baliImage from "figma:asset/01fb80ec82606822bc5ddeaf42a357ab41446152.png";
+const baliImage = "/images/bali.jpg";
 import { useCloudNav } from "./Layout";
 
 const categoryIcons: Record<string, React.ReactNode> = {

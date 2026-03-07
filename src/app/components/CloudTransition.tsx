@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import cloud1 from "figma:asset/d5648cc4be44e378cfca3f95f91db6d52110f1e5.png";
-import cloud2 from "figma:asset/da855c0d4e36ab084998e9e69b804851c84470e1.png";
+const cloud1 = "/images/cloud1.svg";
+const cloud2 = "/images/cloud2.svg";
 
 interface CloudTransitionProps {
   phase: "closing" | "opening" | "idle";
@@ -26,51 +26,51 @@ const clouds: CloudItem[] = [
   // TOP SECTION — flipped vertically so cloud mass covers top of screen
   // =============================================
   // Large top-left flipped cloud
-  { id: 1,  img: cloud1, side: "left",  top: "-45%", width: "130vw", opacity: 1,   rotate: 0,   flipX: false, flipY: true, delay: 0,    zIndex: 8, overlapPercent: "35%" },
+  { id: 1, img: cloud1, side: "left", top: "-45%", width: "130vw", opacity: 1, rotate: 0, flipX: false, flipY: true, delay: 0, zIndex: 8, overlapPercent: "35%" },
   // Large top-right flipped cloud
-  { id: 2,  img: cloud2, side: "right", top: "-45%", width: "130vw", opacity: 1,   rotate: 0,   flipX: true,  flipY: true, delay: 0,    zIndex: 8, overlapPercent: "35%" },
+  { id: 2, img: cloud2, side: "right", top: "-45%", width: "130vw", opacity: 1, rotate: 0, flipX: true, flipY: true, delay: 0, zIndex: 8, overlapPercent: "35%" },
   // Second row flipped left
-  { id: 3,  img: cloud2, side: "left",  top: "-35%", width: "120vw", opacity: 0.95, rotate: 2,   flipX: true,  flipY: true, delay: 0.02, zIndex: 7, overlapPercent: "30%" },
+  { id: 3, img: cloud2, side: "left", top: "-35%", width: "120vw", opacity: 0.95, rotate: 2, flipX: true, flipY: true, delay: 0.02, zIndex: 7, overlapPercent: "30%" },
   // Second row flipped right
-  { id: 4,  img: cloud1, side: "right", top: "-35%", width: "120vw", opacity: 0.95, rotate: -2,  flipX: false, flipY: true, delay: 0.02, zIndex: 7, overlapPercent: "30%" },
+  { id: 4, img: cloud1, side: "right", top: "-35%", width: "120vw", opacity: 0.95, rotate: -2, flipX: false, flipY: true, delay: 0.02, zIndex: 7, overlapPercent: "30%" },
 
   // =============================================
   // LEFT GROUP — normal orientation, covers middle to bottom
   // =============================================
-  { id: 5,  img: cloud1, side: "left",  top: "10%",  width: "120vw", opacity: 1,   rotate: 0,   flipX: false, flipY: false, delay: 0,    zIndex: 5, overlapPercent: "25%" },
-  { id: 6,  img: cloud2, side: "left",  top: "25%",  width: "115vw", opacity: 0.95, rotate: 2,   flipX: true,  flipY: false, delay: 0.03, zIndex: 4, overlapPercent: "22%" },
-  { id: 7,  img: cloud1, side: "left",  top: "42%",  width: "118vw", opacity: 1,   rotate: -2,  flipX: false, flipY: false, delay: 0.04, zIndex: 3, overlapPercent: "24%" },
-  { id: 8,  img: cloud2, side: "left",  top: "58%",  width: "115vw", opacity: 0.95, rotate: 3,   flipX: true,  flipY: false, delay: 0.05, zIndex: 3, overlapPercent: "22%" },
-  { id: 9,  img: cloud1, side: "left",  top: "75%",  width: "120vw", opacity: 1,   rotate: -1,  flipX: false, flipY: false, delay: 0.02, zIndex: 2, overlapPercent: "25%" },
+  { id: 5, img: cloud1, side: "left", top: "10%", width: "120vw", opacity: 1, rotate: 0, flipX: false, flipY: false, delay: 0, zIndex: 5, overlapPercent: "25%" },
+  { id: 6, img: cloud2, side: "left", top: "25%", width: "115vw", opacity: 0.95, rotate: 2, flipX: true, flipY: false, delay: 0.03, zIndex: 4, overlapPercent: "22%" },
+  { id: 7, img: cloud1, side: "left", top: "42%", width: "118vw", opacity: 1, rotate: -2, flipX: false, flipY: false, delay: 0.04, zIndex: 3, overlapPercent: "24%" },
+  { id: 8, img: cloud2, side: "left", top: "58%", width: "115vw", opacity: 0.95, rotate: 3, flipX: true, flipY: false, delay: 0.05, zIndex: 3, overlapPercent: "22%" },
+  { id: 9, img: cloud1, side: "left", top: "75%", width: "120vw", opacity: 1, rotate: -1, flipX: false, flipY: false, delay: 0.02, zIndex: 2, overlapPercent: "25%" },
 
   // =============================================
   // RIGHT GROUP — normal orientation, covers middle to bottom
   // =============================================
-  { id: 10, img: cloud2, side: "right", top: "12%",  width: "120vw", opacity: 1,   rotate: 0,   flipX: true,  flipY: false, delay: 0,    zIndex: 5, overlapPercent: "25%" },
-  { id: 11, img: cloud1, side: "right", top: "28%",  width: "115vw", opacity: 0.95, rotate: -3,  flipX: false, flipY: false, delay: 0.03, zIndex: 4, overlapPercent: "22%" },
-  { id: 12, img: cloud2, side: "right", top: "45%",  width: "118vw", opacity: 1,   rotate: 2,   flipX: true,  flipY: false, delay: 0.04, zIndex: 3, overlapPercent: "24%" },
-  { id: 13, img: cloud1, side: "right", top: "62%",  width: "115vw", opacity: 0.95, rotate: -2,  flipX: false, flipY: false, delay: 0.05, zIndex: 3, overlapPercent: "22%" },
-  { id: 14, img: cloud2, side: "right", top: "78%",  width: "120vw", opacity: 1,   rotate: 2,   flipX: true,  flipY: false, delay: 0.02, zIndex: 2, overlapPercent: "25%" },
+  { id: 10, img: cloud2, side: "right", top: "12%", width: "120vw", opacity: 1, rotate: 0, flipX: true, flipY: false, delay: 0, zIndex: 5, overlapPercent: "25%" },
+  { id: 11, img: cloud1, side: "right", top: "28%", width: "115vw", opacity: 0.95, rotate: -3, flipX: false, flipY: false, delay: 0.03, zIndex: 4, overlapPercent: "22%" },
+  { id: 12, img: cloud2, side: "right", top: "45%", width: "118vw", opacity: 1, rotate: 2, flipX: true, flipY: false, delay: 0.04, zIndex: 3, overlapPercent: "24%" },
+  { id: 13, img: cloud1, side: "right", top: "62%", width: "115vw", opacity: 0.95, rotate: -2, flipX: false, flipY: false, delay: 0.05, zIndex: 3, overlapPercent: "22%" },
+  { id: 14, img: cloud2, side: "right", top: "78%", width: "120vw", opacity: 1, rotate: 2, flipX: true, flipY: false, delay: 0.02, zIndex: 2, overlapPercent: "25%" },
 
   // =============================================
   // BOTTOM SEAL — extra clouds at very bottom
   // =============================================
-  { id: 15, img: cloud2, side: "left",  top: "88%",  width: "125vw", opacity: 1,   rotate: 0,   flipX: false, flipY: false, delay: 0.01, zIndex: 6, overlapPercent: "30%" },
-  { id: 16, img: cloud1, side: "right", top: "88%",  width: "125vw", opacity: 1,   rotate: 0,   flipX: true,  flipY: false, delay: 0.01, zIndex: 6, overlapPercent: "30%" },
+  { id: 15, img: cloud2, side: "left", top: "88%", width: "125vw", opacity: 1, rotate: 0, flipX: false, flipY: false, delay: 0.01, zIndex: 6, overlapPercent: "30%" },
+  { id: 16, img: cloud1, side: "right", top: "88%", width: "125vw", opacity: 1, rotate: 0, flipX: true, flipY: false, delay: 0.01, zIndex: 6, overlapPercent: "30%" },
 
   // =============================================
   // CENTER FILL — deep overlap to seal the left-right seam
   // =============================================
-  { id: 17, img: cloud1, side: "left",  top: "20%",  width: "90vw",  opacity: 0.9,  rotate: 4,   flipX: false, flipY: false, delay: 0.07, zIndex: 7, overlapPercent: "40%" },
-  { id: 18, img: cloud2, side: "right", top: "35%",  width: "90vw",  opacity: 0.9,  rotate: -4,  flipX: true,  flipY: false, delay: 0.07, zIndex: 7, overlapPercent: "40%" },
-  { id: 19, img: cloud1, side: "left",  top: "52%",  width: "85vw",  opacity: 0.85, rotate: -3,  flipX: true,  flipY: false, delay: 0.09, zIndex: 7, overlapPercent: "38%" },
-  { id: 20, img: cloud2, side: "right", top: "68%",  width: "88vw",  opacity: 0.85, rotate: 3,   flipX: false, flipY: false, delay: 0.09, zIndex: 7, overlapPercent: "38%" },
+  { id: 17, img: cloud1, side: "left", top: "20%", width: "90vw", opacity: 0.9, rotate: 4, flipX: false, flipY: false, delay: 0.07, zIndex: 7, overlapPercent: "40%" },
+  { id: 18, img: cloud2, side: "right", top: "35%", width: "90vw", opacity: 0.9, rotate: -4, flipX: true, flipY: false, delay: 0.07, zIndex: 7, overlapPercent: "40%" },
+  { id: 19, img: cloud1, side: "left", top: "52%", width: "85vw", opacity: 0.85, rotate: -3, flipX: true, flipY: false, delay: 0.09, zIndex: 7, overlapPercent: "38%" },
+  { id: 20, img: cloud2, side: "right", top: "68%", width: "88vw", opacity: 0.85, rotate: 3, flipX: false, flipY: false, delay: 0.09, zIndex: 7, overlapPercent: "38%" },
 
   // =============================================
   // TOP CENTER FILL — flipped clouds filling seam at top
   // =============================================
-  { id: 21, img: cloud1, side: "left",  top: "-25%", width: "95vw",  opacity: 0.9,  rotate: -3,  flipX: true,  flipY: true, delay: 0.06, zIndex: 9, overlapPercent: "42%" },
-  { id: 22, img: cloud2, side: "right", top: "-25%", width: "95vw",  opacity: 0.9,  rotate: 3,   flipX: false, flipY: true, delay: 0.06, zIndex: 9, overlapPercent: "42%" },
+  { id: 21, img: cloud1, side: "left", top: "-25%", width: "95vw", opacity: 0.9, rotate: -3, flipX: true, flipY: true, delay: 0.06, zIndex: 9, overlapPercent: "42%" },
+  { id: 22, img: cloud2, side: "right", top: "-25%", width: "95vw", opacity: 0.9, rotate: 3, flipX: false, flipY: true, delay: 0.06, zIndex: 9, overlapPercent: "42%" },
 ];
 
 export function CloudTransition({ phase }: CloudTransitionProps) {
