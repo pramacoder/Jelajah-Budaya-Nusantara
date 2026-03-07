@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Music, UtensilsCrossed, Shirt, Headphones, X, ArrowLeft } from "lucide-react";
 import { islands } from "./island-data";
 import type { CultureInfo } from "./island-data";
-const baliImage = "/images/bali.jpg";
+
 import { useCloudNav } from "./Layout";
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -52,7 +52,7 @@ export function IslandDetail() {
     );
   }
 
-  const heroImage = island.id === "bali" ? baliImage : island.heroImage;
+  const heroImage = island.heroImage;
 
   return (
     <div className="min-h-screen bg-[#0a1628]">

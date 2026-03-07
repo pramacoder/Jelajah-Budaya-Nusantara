@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-const cloud1 = "/images/cloud1.svg";
-const cloud2 = "/images/cloud2.svg";
+import cloud1 from "../../assets/cloud1.png";
+import cloud2 from "../../assets/cloud2.png";
 
 interface CloudTransitionProps {
   phase: "closing" | "opening" | "idle";

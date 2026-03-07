@@ -177,7 +177,7 @@ export const islands: Record<string, IslandData> = {
     subtitle: "Pulau Dewata",
     description:
       "Bali, Pulau Dewata, terkenal di seluruh dunia dengan keindahan alam, budaya yang kaya, dan spiritualitas yang mendalam. Setiap sudut pulau ini memancarkan keindahan seni dan tradisi.",
-    heroImage: "/images/bali.jpg",
+    heroImage: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1920&q=80",
     culture: [
       {
         category: "Tarian",

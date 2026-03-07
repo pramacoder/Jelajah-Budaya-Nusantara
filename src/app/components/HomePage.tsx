@@ -1,7 +1,7 @@
 import { useCloudNav } from "./Layout";
 import { motion } from "motion/react";
 import { Compass, Sparkles, Globe } from "lucide-react";
-const earthImage = "/images/earth.jpg";
+import earthImage from "../../assets/earth.png";
 
 export function HomePage() {
   const navigate = useCloudNav();

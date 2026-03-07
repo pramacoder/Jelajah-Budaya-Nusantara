@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCloudNav } from "./Layout";
 import { motion, AnimatePresence } from "motion/react";
 import { MapPin, ChevronRight } from "lucide-react";
-const mapImage = "/images/indonesia-map.jpg";
+import mapImage from "../../assets/indonesia-map.png";
 import { islandPositions } from "./island-data";
 
 const islandNames: Record<string, string> = {
@@ -162,8 +162,8 @@ export function IndonesiaMap() {
                 {/* Highlight overlay */}
                 <div
                   className={`absolute inset-0 rounded-xl transition-all duration-300 ${hoveredIsland === id
-                      ? "bg-amber-400/25 border-2 border-amber-400/60 shadow-lg shadow-amber-400/20"
-                      : "bg-transparent border-2 border-transparent hover:bg-white/10"
+                    ? "bg-amber-400/25 border-2 border-amber-400/60 shadow-lg shadow-amber-400/20"
+                    : "bg-transparent border-2 border-transparent hover:bg-white/10"
                     }`}
                 />
 
@@ -275,8 +275,8 @@ export function IndonesiaMap() {
               onMouseEnter={() => setHoveredIsland(id)}
               onMouseLeave={() => setHoveredIsland(null)}
               className={`px-4 py-2 rounded-full border transition-all cursor-pointer ${hoveredIsland === id
-                  ? "bg-amber-500 text-white border-amber-500"
-                  : "bg-white/5 text-blue-200/80 border-blue-400/20 hover:bg-white/10"
+                ? "bg-amber-500 text-white border-amber-500"
+                : "bg-white/5 text-blue-200/80 border-blue-400/20 hover:bg-white/10"
                 }`}
               style={{ fontSize: "0.85rem" }}
             >
