@@ -11,7 +11,7 @@ export const ISLANDS = {
     tagline: 'Pulau Andalas — kaya rempah & tradisi Melayu',
     description: 'Sumatra adalah pulau terbesar keenam di dunia, kaya akan keanekaragaman alam dan budaya. Dari Danau Toba yang megah hingga hutan tropis lebat Aceh, Sumatra menyimpan keajaiban tak terhingga dari ujung barat hingga selatan Nusantara.',
     heroImage: 'https://images.unsplash.com/photo-1615009820619-d69e2f948e8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80',
-    youtubeId: 'PLACEHOLDER_SUMATRA',
+    youtubeId: 'dHJMlo43GBg',
     culture: [
       {
         id: 'tarian',
@@ -87,7 +87,7 @@ export const ISLANDS = {
     tagline: 'Pulau Seribu Candi — pusat peradaban Nusantara',
     description: 'Pulau Jawa adalah pusat peradaban Indonesia dengan sejarah ribuan tahun. Dari candi megah Borobudur yang berdiri sejak abad ke-9 hingga keraton-keraton agung Yogyakarta dan Surakarta, Jawa menyimpan kekayaan budaya yang tak ternilai harganya.',
     heroImage: 'https://images.unsplash.com/photo-1684189162727-3b0fd73ba9e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80',
-    youtubeId: 'PLACEHOLDER_JAWA',
+    youtubeId: 'N7-gniIB0Ls',
     culture: [
       {
         id: 'tarian',
@@ -163,7 +163,7 @@ export const ISLANDS = {
     tagline: 'Pulau Borneo — hutan tertua & budaya Dayak',
     description: 'Kalimantan, bagian Indonesia dari Pulau Borneo, dikenal dengan hutan hujan tropis tertua di dunia dan keanekaragaman hayati yang luar biasa. Budaya Dayak yang kaya dengan seni ukir, musik sape, dan upacara adat menjadi daya tarik utama.',
     heroImage: 'https://images.unsplash.com/photo-1624605707211-7109c1899164?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80',
-    youtubeId: 'PLACEHOLDER_KALIMANTAN',
+    youtubeId: 'MN_DHSb6vIo',
     culture: [
       {
         id: 'tarian',
@@ -239,7 +239,7 @@ export const ISLANDS = {
     tagline: 'Pulau Dewata — seni, spiritualitas & keindahan',
     description: 'Bali, Pulau Dewata, terkenal di seluruh dunia dengan keindahan alam, budaya yang hidup, dan spiritualitas yang mendalam. Setiap sudut pulau ini memancarkan keindahan seni: dari tari-tarian sakral di pura hingga ukiran kayu yang menakjubkan.',
     heroImage: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1080&q=80',
-    youtubeId: 'PLACEHOLDER_BALI',
+    youtubeId: 'n5VIrSKmXEs',
     culture: [
       {
         id: 'tarian',
@@ -315,7 +315,7 @@ export const ISLANDS = {
     tagline: 'Tanah Cenderawasih — 250+ suku & alam megah',
     description: 'Papua adalah rumah bagi salah satu keanekaragaman budaya terbesar di dunia dengan lebih dari 250 suku asli dan ratusan bahasa berbeda. Dari pegunungan Jayawijaya yang ditutupi salju abadi hingga kepulauan Raja Ampat yang menakjubkan.',
     heroImage: 'https://images.unsplash.com/photo-1650445332429-75ceee3f3226?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80',
-    youtubeId: 'PLACEHOLDER_PAPUA',
+    youtubeId: '79qjW_1E7s8',
     culture: [
       {
         id: 'tarian',

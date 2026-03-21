@@ -12,14 +12,9 @@ function navigate(href) {
   transition.navigate(() => { window.location.hash = href; });
 }
 
-/* ---- Modal ---- */
+/* ---- Modal (tanpa bagian video — video ada di halaman pulau) ---- */
 function openModal(island, culture) {
-  const col     = CATEGORY_COLORS[culture.color] || CATEGORY_COLORS.amber;
-  const ytId    = island.youtubeId;
-  const hasYT   = ytId && !ytId.startsWith('PLACEHOLDER');
-  const ytEmbed = hasYT
-    ? `https://www.youtube.com/embed/${ytId}?autoplay=0&rel=0`
-    : '';
+  const col = CATEGORY_COLORS[culture.color] || CATEGORY_COLORS.amber;
 
   const modal = document.createElement('div');
   modal.className = 'modal-backdrop';
@@ -45,36 +40,13 @@ function openModal(island, culture) {
         <h2 id="modal-title" style="font-family:var(--font-serif);font-size:1.55rem;color:#fff;margin-bottom:.85rem;">${culture.title}</h2>
 
         <!-- Description -->
-        <p style="color:var(--text-muted);font-size:.95rem;line-height:1.75;margin-bottom:1.4rem;">${culture.description}</p>
-
-        <!-- YouTube Video Button / Embed -->
-        <div id="yt-section">
-          ${hasYT ? `
-            <button id="play-video-btn" style="display:flex;align-items:center;gap:.6rem;
-                    padding:.65rem 1.25rem;border-radius:10px;
-                    background:rgba(255,0,0,.15);border:1px solid rgba(255,80,80,.35);
-                    color:#ff8080;font-size:.9rem;cursor:pointer;transition:background .2s;margin-bottom:1rem;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              Lihat Video Keindahan ${island.name}
-            </button>
-            <div id="yt-embed" style="display:none;">
-              <div class="yt-wrap">
-                <iframe src="${ytEmbed}" allowfullscreen loading="lazy"
-                        allow="accelerometer;autoplay;clipboard-write;encrypted-media;picture-in-picture">
-                </iframe>
-              </div>
-            </div>` : `
-            <div style="font-size:.8rem;color:rgba(255,255,255,.3);font-style:italic;">
-              Link video belum tersedia
-            </div>`}
-        </div>
+        <p style="color:var(--text-muted);font-size:.95rem;line-height:1.75;">${culture.description}</p>
       </div>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  // Close modal
   function closeModal() {
     audio.stop();
     modal.remove();
@@ -82,18 +54,6 @@ function openModal(island, culture) {
   document.getElementById('modal-close-btn').addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); }, { once: true });
-
-  // Video toggle
-  if (hasYT) {
-    const btn  = document.getElementById('play-video-btn');
-    const wrap = document.getElementById('yt-embed');
-    btn.addEventListener('click', () => {
-      wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
-      btn.textContent    = wrap.style.display === 'none' ? `▶ Lihat Video Keindahan ${island.name}` : '✕ Tutup Video';
-    });
-    btn.addEventListener('mouseenter', () => { btn.style.background = 'rgba(255,0,0,.30)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.background = 'rgba(255,0,0,.15)'; });
-  }
 
   // Play audio for this culture item
   audio.play(`${island.id}_${culture.id}`);
@@ -138,8 +98,34 @@ export function renderIsland(islandId) {
       </div>
 
       <!-- Description -->
-      <div class="anim-fade-up" style="max-width:720px;margin:0 auto;padding:2rem 1.5rem;text-align:center;">
+      <div class="anim-fade-up" style="max-width:720px;margin:0 auto;padding:2rem 1.5rem 1rem;text-align:center;">
         <p style="color:var(--text-muted);font-size:1rem;line-height:1.8;">${island.description}</p>
+      </div>
+
+      <!-- Video Section (langsung di halaman detail pulau) -->
+      <div class="anim-fade-up" style="max-width:720px;margin:0 auto;padding:0 1.5rem 2.5rem;text-align:center;">
+        ${(() => {
+          const ytId  = island.youtubeId;
+          const hasYT = ytId && !ytId.startsWith('PLACEHOLDER');
+          if (!hasYT) return '';
+          const ytEmbed = `https://www.youtube.com/embed/${ytId}?rel=0`;
+          return `
+            <button id="island-video-btn"
+                    style="display:inline-flex;align-items:center;gap:.65rem;
+                           padding:.75rem 2rem;border-radius:999px;
+                           background:rgba(220,38,38,.18);border:1px solid rgba(239,68,68,.40);
+                           color:#fca5a5;font-size:1rem;cursor:pointer;transition:all .25s;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Lihat Video ${island.name}
+            </button>
+            <div id="island-video-embed" style="display:none;margin-top:1.1rem;">
+              <div class="yt-wrap" style="border-radius:16px;overflow:hidden;">
+                <iframe src="${ytEmbed}" allowfullscreen loading="lazy"
+                        allow="accelerometer;autoplay;clipboard-write;encrypted-media;picture-in-picture">
+                </iframe>
+              </div>
+            </div>`;
+        })()}
       </div>
 
       <!-- Culture Section -->
@@ -197,6 +183,21 @@ export function renderIsland(islandId) {
       openModal(island, culture);
     });
   });
+
+  // Wire up island video toggle button
+  const vidBtn  = document.getElementById('island-video-btn');
+  const vidWrap = document.getElementById('island-video-embed');
+  if (vidBtn && vidWrap) {
+    vidBtn.addEventListener('click', () => {
+      const isOpen = vidWrap.style.display !== 'none';
+      vidWrap.style.display = isOpen ? 'none' : 'block';
+      vidBtn.innerHTML = isOpen
+        ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Lihat Video ${island.name}`
+        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Tutup Video`;
+    });
+    vidBtn.addEventListener('mouseenter', () => { vidBtn.style.background = 'rgba(220,38,38,.32)'; });
+    vidBtn.addEventListener('mouseleave', () => { vidBtn.style.background = 'rgba(220,38,38,.18)'; });
+  }
 
   // Auto-play island intro audio
   audio.play(`${islandId}_intro`);
