@@ -1,0 +1,73 @@
+/* =============================================
+   Cloud Transition Overlay
+   ============================================= */
+
+#cloud-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+  display: none;
+}
+
+/* show overlay when a transition phase is active */
+#cloud-overlay.phase-closing,
+#cloud-overlay.phase-opening {
+  display: block;
+}
+
+/* soft white fill visible when clouds fully cover */
+#cloud-overlay .cloud-backdrop {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #e8e4e0, #f0ece8, #ddd8d2);
+  z-index: 0;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+#cloud-overlay.phase-closing .cloud-backdrop { animation: backdropIn 0.5s 0.35s ease-in-out forwards; }
+#cloud-overlay.phase-opening .cloud-backdrop { opacity: 1; animation: backdropOut 0.4s 0.15s ease-in-out forwards; }
+
+@keyframes backdropIn  { to { opacity: 1; } }
+@keyframes backdropOut { to { opacity: 0; } }
+
+/* ---- Cloud layers ---- */
+.cloud-layer {
+  position: absolute;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Left clouds: positioned from right side, slide in from the left */
+.cloud-left {
+  transform: translateX(-108%);
+}
+/* Right clouds: positioned from left side, slide in from the right */
+.cloud-right {
+  transform: translateX(108%);
+}
+
+/* === CLOSING: clouds slide IN === */
+#cloud-overlay.phase-closing .cloud-left {
+  animation: cloudInL var(--dur, 0.8s) var(--delay, 0s) cubic-bezier(.25,.1,.25,1) forwards;
+}
+#cloud-overlay.phase-closing .cloud-right {
+  animation: cloudInR var(--dur, 0.8s) var(--delay, 0s) cubic-bezier(.25,.1,.25,1) forwards;
+}
+
+/* === OPENING: clouds slide OUT === */
+#cloud-overlay.phase-opening .cloud-left {
+  transform: translateX(0);
+  animation: cloudOutL var(--dur, 0.85s) var(--delay, 0s) cubic-bezier(.25,.1,.25,1) forwards;
+}
+#cloud-overlay.phase-opening .cloud-right {
+  transform: translateX(0);
+  animation: cloudOutR var(--dur, 0.85s) var(--delay, 0s) cubic-bezier(.25,.1,.25,1) forwards;
+}
+
+@keyframes cloudInL  { from { transform: translateX(-108%); } to { transform: translateX(0); } }
+@keyframes cloudInR  { from { transform: translateX(108%);  } to { transform: translateX(0); } }
+@keyframes cloudOutL { from { transform: translateX(0);     } to { transform: translateX(-108%); } }
+@keyframes cloudOutR { from { transform: translateX(0);     } to { transform: translateX(108%);  } }
