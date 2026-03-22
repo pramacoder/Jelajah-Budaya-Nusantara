@@ -387,11 +387,11 @@ export const ISLANDS = {
 
 /* Island positions on the map image (percentage-based) */
 export const ISLAND_POSITIONS = {
-  sumatra:    { top: '28%', left: '8%',  width: '18%', height: '45%' },
-  jawa:       { top: '62%', left: '22%', width: '18%', height: '14%' },
-  kalimantan: { top: '20%', left: '28%', width: '22%', height: '38%' },
-  bali:       { top: '60%', left: '42%', width: '6%',  height: '10%' },
-  papua:      { top: '25%', left: '70%', width: '22%', height: '35%' },
+  sumatra:    { top: '23%', left: '2%',  width: '14%', height: '40%' },
+  jawa:       { top: '54%', left: '16%', width: '18%', height: '14%' },
+  kalimantan: { top: '12%', left: '22%', width: '22%', height: '38%' },
+  bali:       { top: '59%', left: '33%', width: '4%',  height: '8%' },
+  papua:      { top: '38%', left: '78%', width: '22%', height: '35%' },
 };
 
 /* Color system for categories */
