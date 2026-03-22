@@ -84,7 +84,7 @@ export function renderMap() {
     }[side];
 
     return `
-      <div style="position:absolute;${posClass};z-index:20;width:220px;
+      <div style="position:absolute;${posClass};z-index:20;width:280px;
                   background:var(--bg-card);border:1px solid rgba(251,191,36,.3);
                   border-radius:14px;padding:1rem;box-shadow:0 8px 32px rgba(0,0,0,.5);
                   animation:fadeIn .2s ease both;">
