@@ -1,36 +1,47 @@
 /* =============================================
    Cloud Transition Controller
-   Mirrors the React CloudTransition component
-   using CSS classes + inline style variables.
+   Uses Web Animations API (element.animate) — 100% vanilla JS.
+   No external libraries. Works in all modern browsers.
+
+   Layer grouping for parallax effect:
+     Group A (idx 0–3)   : top-section flipped layers  — fastest (680ms)
+     Group B (idx 4–13)  : left/right main groups      — medium  (800ms)
+     Group C (idx 14–21) : center fill + seal layers   — slowest (930ms)
+
+   Phase timing:
+     CLOSING : ~920ms  (clouds slide in, backdrop fades in at 300ms)
+     gap      : 80ms   (new page renders behind closed clouds)
+     OPENING  : ~920ms (backdrop fades out, clouds slide out staggered)
    ============================================= */
 
 const CLOUD_LAYERS = [
-  // ── TOP SECTION (flipped vertically) ──────────────
+  // ── GROUP A: TOP SECTION (flipped) ─── fastest
   { side:'left',  top:'-45%', width:'130vw', opacity:1,    rotate:0,   flipX:false, flipY:true,  delay:0,    zIndex:8, overlap:'35%' },
   { side:'right', top:'-45%', width:'130vw', opacity:1,    rotate:0,   flipX:true,  flipY:true,  delay:0,    zIndex:8, overlap:'35%' },
   { side:'left',  top:'-35%', width:'120vw', opacity:.95,  rotate:2,   flipX:true,  flipY:true,  delay:.02,  zIndex:7, overlap:'30%' },
   { side:'right', top:'-35%', width:'120vw', opacity:.95,  rotate:-2,  flipX:false, flipY:true,  delay:.02,  zIndex:7, overlap:'30%' },
-  // ── LEFT GROUP ────────────────────────────────────
+
+  // ── GROUP B: LEFT/RIGHT MAIN GROUPS ─── medium speed
   { side:'left',  top:'10%',  width:'120vw', opacity:1,    rotate:0,   flipX:false, flipY:false, delay:0,    zIndex:5, overlap:'25%' },
   { side:'left',  top:'25%',  width:'115vw', opacity:.95,  rotate:2,   flipX:true,  flipY:false, delay:.03,  zIndex:4, overlap:'22%' },
   { side:'left',  top:'42%',  width:'118vw', opacity:1,    rotate:-2,  flipX:false, flipY:false, delay:.04,  zIndex:3, overlap:'24%' },
   { side:'left',  top:'58%',  width:'115vw', opacity:.95,  rotate:3,   flipX:true,  flipY:false, delay:.05,  zIndex:3, overlap:'22%' },
   { side:'left',  top:'75%',  width:'120vw', opacity:1,    rotate:-1,  flipX:false, flipY:false, delay:.02,  zIndex:2, overlap:'25%' },
-  // ── RIGHT GROUP ───────────────────────────────────
   { side:'right', top:'12%',  width:'120vw', opacity:1,    rotate:0,   flipX:true,  flipY:false, delay:0,    zIndex:5, overlap:'25%' },
   { side:'right', top:'28%',  width:'115vw', opacity:.95,  rotate:-3,  flipX:false, flipY:false, delay:.03,  zIndex:4, overlap:'22%' },
   { side:'right', top:'45%',  width:'118vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.04,  zIndex:3, overlap:'24%' },
   { side:'right', top:'62%',  width:'115vw', opacity:.95,  rotate:-2,  flipX:false, flipY:false, delay:.05,  zIndex:3, overlap:'22%' },
   { side:'right', top:'78%',  width:'120vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.02,  zIndex:2, overlap:'25%' },
-  // ── BOTTOM SEAL ───────────────────────────────────
+
+  // ── GROUP C: BOTTOM SEAL ─── slowest
   { side:'left',  top:'88%',  width:'125vw', opacity:1,    rotate:0,   flipX:false, flipY:false, delay:.01,  zIndex:6, overlap:'30%' },
   { side:'right', top:'88%',  width:'125vw', opacity:1,    rotate:0,   flipX:true,  flipY:false, delay:.01,  zIndex:6, overlap:'30%' },
-  // ── CENTER FILL ───────────────────────────────────
+  // ── GROUP C: CENTER FILL
   { side:'left',  top:'20%',  width:'90vw',  opacity:.9,   rotate:4,   flipX:false, flipY:false, delay:.07,  zIndex:7, overlap:'40%' },
   { side:'right', top:'35%',  width:'90vw',  opacity:.9,   rotate:-4,  flipX:true,  flipY:false, delay:.07,  zIndex:7, overlap:'40%' },
   { side:'left',  top:'52%',  width:'85vw',  opacity:.85,  rotate:-3,  flipX:true,  flipY:false, delay:.09,  zIndex:7, overlap:'38%' },
   { side:'right', top:'68%',  width:'88vw',  opacity:.85,  rotate:3,   flipX:false, flipY:false, delay:.09,  zIndex:7, overlap:'38%' },
-  // ── TOP CENTER FILL ───────────────────────────────
+  // ── GROUP C: TOP CENTER FILL
   { side:'left',  top:'-25%', width:'95vw',  opacity:.9,   rotate:-3,  flipX:true,  flipY:true,  delay:.06,  zIndex:9, overlap:'42%' },
   { side:'right', top:'-25%', width:'95vw',  opacity:.9,   rotate:3,   flipX:false, flipY:true,  delay:.06,  zIndex:9, overlap:'42%' },
 ];
@@ -40,60 +51,162 @@ const CLOUD_IMGS = [
   'assets/images/cloud2.png',
 ];
 
+/* ---- Easing per group (parallax feel) ---- */
+function getEasing(idx) {
+  if (idx < 4)  return 'cubic-bezier(0.4, 0, 0.6, 1)';  // Group A: snap in fast
+  if (idx < 14) return 'cubic-bezier(0.4, 0, 0.2, 1)';  // Group B: smooth material easing
+  return          'cubic-bezier(0.2, 0, 0.2, 1)';        // Group C: slow, dramatic
+}
+
+/* ---- Duration per group (parallax: outer faster, inner slower) ---- */
+function getDuration(idx) {
+  if (idx < 4)  return 680;  // Group A: fastest  (top layers)
+  if (idx < 14) return 800;  // Group B: medium   (main flanks)
+  return          930;        // Group C: slowest  (center fill)
+}
+
+/* ---- Helper: Promise-based delay ---- */
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
 class CloudTransition {
   constructor() {
-    this.overlay = document.getElementById('cloud-overlay');
-    this._busy   = false;
-    this._built  = false;
+    this.overlay  = document.getElementById('cloud-overlay');
+    this._busy    = false;
+    this._built   = false;
+    this._layers  = [];   // DOM refs to .cloud-layer elements
+    this._backdrop = null;
   }
 
+  /* Build cloud DOM once */
   _build() {
     if (this._built) return;
     this._built = true;
 
-    let html = '<div class="cloud-backdrop"></div>';
+    /* Backdrop */
+    const backdrop = document.createElement('div');
+    backdrop.className = 'cloud-backdrop';
+    this.overlay.appendChild(backdrop);
+    this._backdrop = backdrop;
+
+    /* Cloud layers */
     CLOUD_LAYERS.forEach((c, i) => {
-      const img     = CLOUD_IMGS[i % 2];
-      const scaleX  = c.flipX ? -1 : 1;
-      const scaleY  = c.flipY ? -1 : 1;
-      const imgTf   = `rotate(${c.rotate}deg) scale(${scaleX},${scaleY})`;
+      const img    = CLOUD_IMGS[i % 2];
+      const scaleX = c.flipX ? -1 : 1;
+      const scaleY = c.flipY ? -1 : 1;
+      const imgTf  = `rotate(${c.rotate}deg) scale(${scaleX},${scaleY})`;
       const posStyle = c.side === 'left'
         ? `right:${c.overlap};`
         : `left:${c.overlap};`;
 
-      html += `
-        <div class="cloud-layer cloud-${c.side}"
-             style="--dur:0.8s;--delay:${c.delay}s;top:${c.top};width:${c.width};z-index:${c.zIndex};position:absolute;${posStyle}">
-          <img src="${img}" alt="" draggable="false"
-               style="width:100%;height:auto;transform:${imgTf};opacity:${c.opacity};user-select:none;" />
-        </div>`;
+      const div = document.createElement('div');
+      div.className = `cloud-layer cloud-${c.side}`;
+      div.style.cssText = `top:${c.top};width:${c.width};z-index:${c.zIndex};${posStyle}`;
+      div.innerHTML = `<img src="${img}" alt="" draggable="false"
+        style="width:100%;height:auto;transform:${imgTf};opacity:${c.opacity};user-select:none;" />`;
+      this.overlay.appendChild(div);
+      this._layers.push({ el: div, side: c.side, delay: c.delay });
     });
-    this.overlay.innerHTML = html;
+  }
+
+  /* Reset all layers to off-screen starting position */
+  _resetLayers() {
+    this._layers.forEach(({ el, side }) => {
+      el.style.transform = side === 'left' ? 'translateX(-110%)' : 'translateX(110%)';
+    });
+    this._backdrop.style.opacity = '0';
+  }
+
+  /* ---- CLOSING phase: slide clouds IN ---- */
+  _animateClose() {
+    const animations = this._layers.map(({ el, side }, idx) => {
+      const from  = side === 'left' ? 'translateX(-110%)' : 'translateX(110%)';
+      const delay = this._layers[idx].delay * 1000; // convert to ms
+
+      return el.animate(
+        [
+          { transform: from,               offset: 0 },
+          { transform: 'translateX(0)',    offset: 1 },
+        ],
+        {
+          duration:   getDuration(idx),
+          delay:      delay,
+          easing:     getEasing(idx),
+          fill:       'forwards',
+        }
+      );
+    });
+
+    /* Backdrop fades in while clouds are closing */
+    const backdropAnim = this._backdrop.animate(
+      [{ opacity: 0 }, { opacity: 1 }],
+      { duration: 350, delay: 300, easing: 'ease-in', fill: 'forwards' }
+    );
+
+    return Promise.all([
+      ...animations.map(a => a.finished),
+      backdropAnim.finished,
+    ]);
+  }
+
+  /* ---- OPENING phase: slide clouds OUT ---- */
+  _animateOpen() {
+    /* Backdrop fades out immediately */
+    this._backdrop.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      { duration: 350, easing: 'ease-out', fill: 'forwards' }
+    );
+
+    /* Clouds slide out — center layers leave first (reverse stagger) */
+    const total = this._layers.length;
+    const animations = this._layers.map(({ el, side }, idx) => {
+      // Reverse: layers with higher index get smaller delay → exit sooner
+      const reverseDelay = (total - 1 - idx) * 10; // ms per step
+      const to = side === 'left' ? 'translateX(-110%)' : 'translateX(110%)';
+
+      return el.animate(
+        [
+          { transform: 'translateX(0)', offset: 0 },
+          { transform: to,              offset: 1 },
+        ],
+        {
+          duration:   getDuration(idx),
+          delay:      reverseDelay,
+          easing:     getEasing(idx),
+          fill:       'forwards',
+        }
+      );
+    });
+
+    return Promise.all(animations.map(a => a.finished));
   }
 
   /**
-   * Wraps a navigation callback with the cloud transition:
-   * clouds close → callback() → clouds open
+   * Trigger full cloud transition:
+   * clouds close → callback() renders new page → clouds open
    */
-  navigate(callback) {
+  async navigate(callback) {
     if (this._busy) return;
     this._busy = true;
     this._build();
+    this._resetLayers();
 
-    // Phase 1: close
-    this.overlay.className = 'phase-closing';
+    /* Show overlay */
+    this.overlay.style.display = 'block';
 
-    setTimeout(() => {
-      callback();                         // render new page behind clouds
-      setTimeout(() => {
-        // Phase 2: open
-        this.overlay.className = 'phase-opening';
-        setTimeout(() => {
-          this.overlay.className = '';
-          this._busy = false;
-        }, 1050);
-      }, 120);
-    }, 950);
+    /* 1. Close */
+    await this._animateClose();
+
+    /* 2. Render new page behind closed clouds */
+    callback();
+    await wait(80);
+
+    /* 3. Open */
+    await this._animateOpen();
+
+    /* 4. Clean up */
+    this.overlay.style.display = 'none';
+    this._resetLayers();
+    this._busy = false;
   }
 }
 
