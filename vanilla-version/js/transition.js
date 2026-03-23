@@ -16,34 +16,37 @@
 
 const CLOUD_LAYERS = [
   // ── GROUP A: TOP SECTION (flipped) ─── fastest
-  { side:'left',  top:'-45%', width:'130vw', opacity:1,    rotate:0,   flipX:false, flipY:true,  delay:0,    zIndex:8, overlap:'35%' },
-  { side:'right', top:'-45%', width:'130vw', opacity:1,    rotate:0,   flipX:true,  flipY:true,  delay:0,    zIndex:8, overlap:'35%' },
-  { side:'left',  top:'-35%', width:'120vw', opacity:.95,  rotate:2,   flipX:true,  flipY:true,  delay:.02,  zIndex:7, overlap:'30%' },
-  { side:'right', top:'-35%', width:'120vw', opacity:.95,  rotate:-2,  flipX:false, flipY:true,  delay:.02,  zIndex:7, overlap:'30%' },
+  { side:'left',  top:'-45%', width:'140vw', opacity:1,    rotate:0,   flipX:false, flipY:true,  delay:0,    zIndex:8, overlap:'45%' },
+  { side:'right', top:'-45%', width:'140vw', opacity:1,    rotate:0,   flipX:true,  flipY:true,  delay:0,    zIndex:8, overlap:'45%' },
+  { side:'left',  top:'-35%', width:'130vw', opacity:1,    rotate:2,   flipX:true,  flipY:true,  delay:.02,  zIndex:7, overlap:'40%' },
+  { side:'right', top:'-35%', width:'130vw', opacity:1,    rotate:-2,  flipX:false, flipY:true,  delay:.02,  zIndex:7, overlap:'40%' },
 
   // ── GROUP B: LEFT/RIGHT MAIN GROUPS ─── medium speed
-  { side:'left',  top:'10%',  width:'120vw', opacity:1,    rotate:0,   flipX:false, flipY:false, delay:0,    zIndex:5, overlap:'25%' },
-  { side:'left',  top:'25%',  width:'115vw', opacity:.95,  rotate:2,   flipX:true,  flipY:false, delay:.03,  zIndex:4, overlap:'22%' },
-  { side:'left',  top:'42%',  width:'118vw', opacity:1,    rotate:-2,  flipX:false, flipY:false, delay:.04,  zIndex:3, overlap:'24%' },
-  { side:'left',  top:'58%',  width:'115vw', opacity:.95,  rotate:3,   flipX:true,  flipY:false, delay:.05,  zIndex:3, overlap:'22%' },
-  { side:'left',  top:'75%',  width:'120vw', opacity:1,    rotate:-1,  flipX:false, flipY:false, delay:.02,  zIndex:2, overlap:'25%' },
-  { side:'right', top:'12%',  width:'120vw', opacity:1,    rotate:0,   flipX:true,  flipY:false, delay:0,    zIndex:5, overlap:'25%' },
-  { side:'right', top:'28%',  width:'115vw', opacity:.95,  rotate:-3,  flipX:false, flipY:false, delay:.03,  zIndex:4, overlap:'22%' },
-  { side:'right', top:'45%',  width:'118vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.04,  zIndex:3, overlap:'24%' },
-  { side:'right', top:'62%',  width:'115vw', opacity:.95,  rotate:-2,  flipX:false, flipY:false, delay:.05,  zIndex:3, overlap:'22%' },
-  { side:'right', top:'78%',  width:'120vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.02,  zIndex:2, overlap:'25%' },
+  { side:'left',  top:'5%',   width:'130vw', opacity:1,    rotate:0,   flipX:false, flipY:false, delay:0,    zIndex:5, overlap:'35%' },
+  { side:'left',  top:'20%',  width:'125vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.03,  zIndex:4, overlap:'32%' },
+  { side:'left',  top:'37%',  width:'128vw', opacity:1,    rotate:-2,  flipX:false, flipY:false, delay:.04,  zIndex:3, overlap:'34%' },
+  { side:'left',  top:'54%',  width:'125vw', opacity:1,    rotate:3,   flipX:true,  flipY:false, delay:.05,  zIndex:3, overlap:'32%' },
+  { side:'left',  top:'72%',  width:'130vw', opacity:1,    rotate:-1,  flipX:false, flipY:false, delay:.02,  zIndex:2, overlap:'35%' },
+  { side:'right', top:'7%',   width:'130vw', opacity:1,    rotate:0,   flipX:true,  flipY:false, delay:0,    zIndex:5, overlap:'35%' },
+  { side:'right', top:'22%',  width:'125vw', opacity:1,    rotate:-3,  flipX:false, flipY:false, delay:.03,  zIndex:4, overlap:'32%' },
+  { side:'right', top:'40%',  width:'128vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.04,  zIndex:3, overlap:'34%' },
+  { side:'right', top:'57%',  width:'125vw', opacity:1,    rotate:-2,  flipX:false, flipY:false, delay:.05,  zIndex:3, overlap:'32%' },
+  { side:'right', top:'75%',  width:'130vw', opacity:1,    rotate:2,   flipX:true,  flipY:false, delay:.02,  zIndex:2, overlap:'35%' },
 
   // ── GROUP C: BOTTOM SEAL ─── slowest
-  { side:'left',  top:'88%',  width:'125vw', opacity:1,    rotate:0,   flipX:false, flipY:false, delay:.01,  zIndex:6, overlap:'30%' },
-  { side:'right', top:'88%',  width:'125vw', opacity:1,    rotate:0,   flipX:true,  flipY:false, delay:.01,  zIndex:6, overlap:'30%' },
-  // ── GROUP C: CENTER FILL
-  { side:'left',  top:'20%',  width:'90vw',  opacity:.9,   rotate:4,   flipX:false, flipY:false, delay:.07,  zIndex:7, overlap:'40%' },
-  { side:'right', top:'35%',  width:'90vw',  opacity:.9,   rotate:-4,  flipX:true,  flipY:false, delay:.07,  zIndex:7, overlap:'40%' },
-  { side:'left',  top:'52%',  width:'85vw',  opacity:.85,  rotate:-3,  flipX:true,  flipY:false, delay:.09,  zIndex:7, overlap:'38%' },
-  { side:'right', top:'68%',  width:'88vw',  opacity:.85,  rotate:3,   flipX:false, flipY:false, delay:.09,  zIndex:7, overlap:'38%' },
-  // ── GROUP C: TOP CENTER FILL
-  { side:'left',  top:'-25%', width:'95vw',  opacity:.9,   rotate:-3,  flipX:true,  flipY:true,  delay:.06,  zIndex:9, overlap:'42%' },
-  { side:'right', top:'-25%', width:'95vw',  opacity:.9,   rotate:3,   flipX:false, flipY:true,  delay:.06,  zIndex:9, overlap:'42%' },
+  { side:'left',  top:'85%',  width:'140vw', opacity:1,    rotate:0,   flipX:false, flipY:false, delay:.01,  zIndex:6, overlap:'45%' },
+  { side:'right', top:'85%',  width:'140vw', opacity:1,    rotate:0,   flipX:true,  flipY:false, delay:.01,  zIndex:6, overlap:'45%' },
+  // ── GROUP C: CENTER FILL (close all gaps)
+  { side:'left',  top:'15%',  width:'110vw', opacity:1,    rotate:4,   flipX:false, flipY:false, delay:.06,  zIndex:7, overlap:'55%' },
+  { side:'right', top:'30%',  width:'110vw', opacity:1,    rotate:-4,  flipX:true,  flipY:false, delay:.06,  zIndex:7, overlap:'55%' },
+  { side:'left',  top:'45%',  width:'105vw', opacity:1,    rotate:-3,  flipX:true,  flipY:false, delay:.08,  zIndex:7, overlap:'52%' },
+  { side:'right', top:'60%',  width:'108vw', opacity:1,    rotate:3,   flipX:false, flipY:false, delay:.08,  zIndex:7, overlap:'52%' },
+  // ── GROUP C: TOP CENTER FILL (seal the top corners)
+  { side:'left',  top:'-30%', width:'115vw', opacity:1,    rotate:-3,  flipX:true,  flipY:true,  delay:.05,  zIndex:9, overlap:'55%' },
+  { side:'right', top:'-30%', width:'115vw', opacity:1,    rotate:3,   flipX:false, flipY:true,  delay:.05,  zIndex:9, overlap:'55%' },
+  // ── EXTRA: Additional center coverage
+  { side:'left',  top:'0%',   width:'100vw', opacity:1,    rotate:1,   flipX:false, flipY:false, delay:.07,  zIndex:8, overlap:'50%' },
+  { side:'right', top:'0%',   width:'100vw', opacity:1,    rotate:-1,  flipX:true,  flipY:false, delay:.07,  zIndex:8, overlap:'50%' },
 ];
 
 const CLOUD_IMGS = [
@@ -136,10 +139,10 @@ class CloudTransition {
       );
     });
 
-    /* Backdrop fades in while clouds are closing */
+    /* Backdrop fades in quickly — covers screen immediately to hide any cloud gaps */
     const backdropAnim = this._backdrop.animate(
       [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 350, delay: 300, easing: 'ease-in', fill: 'forwards' }
+      { duration: 200, delay: 100, easing: 'ease-in', fill: 'forwards' }
     );
 
     return Promise.all([

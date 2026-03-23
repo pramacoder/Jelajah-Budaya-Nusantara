@@ -26,12 +26,9 @@ export function renderHome() {
       <!-- Content -->
       <div style="position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;">
 
-        <!-- Globe icon -->
+        <!-- Logo -->
         <div class="anim-scale-in" style="margin-bottom:1.25rem;">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
+          <img src="assets/images/Logo.svg" alt="Jelajah Budaya Nusantara" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(251,191,36,.35));" />
         </div>
 
         <!-- Heading -->
@@ -103,9 +100,10 @@ export function renderHome() {
     btn.style.background = 'rgba(251,191,36,.2)';
   });
 
-  // CTA event — also unlocks audio
+  // CTA event — also unlocks audio and starts background music
   document.getElementById('start-btn').addEventListener('click', () => {
     audio.unlock();
+    audio.playBGM('backsound');  // Start BGM at 20% volume when exploring
     navigate('#/indonesia');
   });
 

@@ -201,6 +201,7 @@ export function renderIsland(islandId) {
     vidBtn.addEventListener('mouseleave', () => { vidBtn.style.background = 'rgba(220,38,38,.18)'; });
   }
 
-  // Auto-play island intro audio
+  // Auto-play island intro audio (voice) + ensure BGM continues
   audio.play(`${islandId}_intro`);
+  audio.playBGM('backsound');
 }

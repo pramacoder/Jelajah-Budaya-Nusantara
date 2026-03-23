@@ -7,7 +7,7 @@
 
 class AudioManager {
   constructor() {
-    this._current = null;   // currently playing Audio object
+    this._current = null;   // currently playing Audio object (voice)
     this._queue   = [];     // pending file to play after current stops
     this._muted   = false;
     this._pending = null;   // audio file pending user interaction (autoplay blocked)
@@ -15,6 +15,12 @@ class AudioManager {
     this._onStateChange = []; // callbacks when play/stop/mute state changes
     this._hoverTimer = null;  // debounce timer for hover audio
     this._isHoverAudio = false; // whether current audio is a hover clip
+
+    // Background Music (BGM) — separate channel
+    this._bgm = null;         // currently playing BGM Audio object
+    this._bgmFile = null;     // name of current BGM file
+    this._bgmVolume = 0.20;   // BGM volume (20%)
+    this._voiceVolume = 1.0;  // Voice volume (100%)
   }
 
   /** Register a callback for state changes */
@@ -51,7 +57,7 @@ class AudioManager {
 
     this.stop();
     const audio = new Audio(`audio/${filename}.mp3`);
-    audio.volume = 0.85;
+    audio.volume = this._voiceVolume;
     this._current = audio;
     this._notifyStateChange();
 
@@ -207,16 +213,90 @@ class AudioManager {
     }
   }
 
-  /** Toggle mute */
+  /** Toggle mute (affects both voice and BGM) */
   toggleMute() {
     this._muted = !this._muted;
-    if (this._muted) this.stop();
+    if (this._muted) {
+      this.stop();
+      if (this._bgm) {
+        this._bgm.pause();
+      }
+    } else {
+      // Resume BGM if it was playing
+      if (this._bgm) {
+        this._bgm.play().catch(() => {});
+      }
+    }
     this._notifyStateChange();
     return this._muted;
   }
 
   get isMuted()   { return this._muted; }
   get isPlaying() { return !!this._current; }
+
+  /* =============================================
+     Background Music (BGM) — separate channel
+     Loops continuously at low volume (20%)
+     Independent from voice narration channel
+     ============================================= */
+
+  /** Play background music (loops, 20% volume) */
+  playBGM(filename, ext = 'wav') {
+    if (this._muted) return;
+    if (!this._unlocked) return;
+
+    // Don't restart if same BGM is already playing
+    if (this._bgmFile === filename && this._bgm && !this._bgm.paused) return;
+
+    this.stopBGM();
+    const bgm = new Audio(`audio/${filename}.${ext}`);
+    bgm.volume = this._bgmVolume;
+    bgm.loop = true;
+    this._bgm = bgm;
+    this._bgmFile = filename;
+
+    bgm.play().catch(() => {
+      /* BGM file not found — silently skip */
+      this._bgm = null;
+      this._bgmFile = null;
+    });
+  }
+
+  /** Stop background music with optional fade */
+  stopBGM(fade = false) {
+    if (!this._bgm) return;
+    if (fade) {
+      const bgm = this._bgm;
+      const steps = 10;
+      const interval = 300 / steps;
+      const decrement = bgm.volume / steps;
+      const fadeInterval = setInterval(() => {
+        bgm.volume = Math.max(0, bgm.volume - decrement);
+        if (bgm.volume <= 0.01) {
+          clearInterval(fadeInterval);
+          bgm.pause();
+          bgm.currentTime = 0;
+        }
+      }, interval);
+    } else {
+      this._bgm.pause();
+      this._bgm.currentTime = 0;
+    }
+    this._bgm = null;
+    this._bgmFile = null;
+  }
+
+  /** Set BGM volume (0-1) */
+  setBGMVolume(vol) {
+    this._bgmVolume = Math.max(0, Math.min(1, vol));
+    if (this._bgm) this._bgm.volume = this._bgmVolume;
+  }
+
+  /** Set voice volume (0-1) */
+  setVoiceVolume(vol) {
+    this._voiceVolume = Math.max(0, Math.min(1, vol));
+    if (this._current) this._current.volume = this._voiceVolume;
+  }
 }
 
 export const audio = new AudioManager();

@@ -38,6 +38,9 @@
 .nav-logo {
   position: absolute;
   left: 50%; transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
   font-family: var(--font-serif, serif);
   font-size: 1.15rem;
   color: var(--primary, #d4621a);

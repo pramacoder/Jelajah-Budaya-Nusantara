@@ -13,12 +13,12 @@
   display: none;   /* JS sets display:block when animating */
 }
 
-/* Soft warm fill — visible when clouds fully cover screen */
+/* Soft warm fill — fully covers screen behind clouds to eliminate gaps */
 #cloud-overlay .cloud-backdrop {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, #e8e4e0, #f0ece8, #ddd8d2);
-  z-index: 0;
+  background: linear-gradient(to bottom, #f5f1ed, #ebe7e3, #e0dcd8);
+  z-index: 1;
   opacity: 0;
 }
 

@@ -137,6 +137,7 @@ export function renderMap() {
 
 
 
-  // Auto-play map intro audio
+  // Auto-play map intro audio (voice) + ensure BGM is playing
   audio.play('map_intro');
+  audio.playBGM('backsound');
 }

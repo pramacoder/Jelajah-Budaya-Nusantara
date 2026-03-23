@@ -24,7 +24,7 @@ export function showNavbar() {
     <button class="nav-back-btn" id="nav-back" title="Kembali" aria-label="Kembali">
       ${SVG_BACK}<span class="nav-back-label">Kembali</span>
     </button>
-    <span class="nav-logo">Nusantara</span>
+    <span class="nav-logo"><img src="assets/images/Logo.svg" alt="Logo" style="height:28px;width:auto;" />Nusantara</span>
     <div class="nav-actions">
       <button class="nav-icon-btn" id="nav-map"  title="Peta Indonesia" aria-label="Peta Indonesia">${SVG_MAP}</button>
       <button class="nav-icon-btn" id="nav-home" title="Beranda"        aria-label="Beranda">${SVG_HOME}</button>
