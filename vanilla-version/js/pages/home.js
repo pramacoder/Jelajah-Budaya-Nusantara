@@ -41,12 +41,25 @@ export function renderHome() {
         </h1>
 
         <!-- Subtitle -->
-        <p class="anim-fade-up d-2" style="color:rgba(255,255,255,.78);font-size:clamp(.9rem,2vw,1.15rem);max-width:520px;margin-bottom:2.5rem;line-height:1.7;">
+        <p class="anim-fade-up d-2" style="color:rgba(255,255,255,.78);font-size:clamp(.9rem,2vw,1.15rem);max-width:520px;margin-bottom:1.5rem;line-height:1.7;">
           Temukan keajaiban dari Sabang sampai Merauke. Jelajahi tarian, kuliner, pakaian adat, dan musik tradisional dari setiap pulau di Nusantara.
         </p>
 
+        <!-- Audio Enable Banner -->
+        <button id="audio-enable-btn" class="audio-welcome-banner anim-fade-up d-3" style="margin-bottom:1.5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          <span>🎙️ Klik untuk mengaktifkan Audio Narasi</span>
+          <div class="sound-bars">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          </div>
+        </button>
+
         <!-- CTA Button -->
-        <button id="start-btn" class="btn-primary anim-fade-up d-3">
+        <button id="start-btn" class="btn-primary anim-fade-up d-4">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
           Mulai Perjalanan
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -70,11 +83,32 @@ export function renderHome() {
     </section>
   `;
 
-  // Event
+  // Audio enable button — unlocks audio and plays welcome
+  document.getElementById('audio-enable-btn').addEventListener('click', () => {
+    audio.unlock();
+    audio.play('welcome');
+    // Change button to show "Audio Aktif"
+    const btn = document.getElementById('audio-enable-btn');
+    btn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </svg>
+      <span>🔊 Audio Narasi Aktif!</span>
+      <div class="sound-bars">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>`;
+    btn.style.borderColor = 'rgba(251,191,36,.6)';
+    btn.style.background = 'rgba(251,191,36,.2)';
+  });
+
+  // CTA event — also unlocks audio
   document.getElementById('start-btn').addEventListener('click', () => {
+    audio.unlock();
     navigate('#/indonesia');
   });
 
-  // Auto-play welcome audio
+  // Attempt to auto-play welcome audio (will be deferred if autoplay blocked)
   audio.play('welcome');
 }

@@ -8,6 +8,7 @@ import { audio }      from '../audio.js';
 import { transition } from '../transition.js';
 
 function navigate(href) {
+  audio.unlock();
   audio.stop();
   transition.navigate(() => { window.location.hash = href; });
 }
@@ -55,7 +56,8 @@ function openModal(island, culture) {
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); }, { once: true });
 
-  // Play audio for this culture item
+  // Unlock and play audio for this culture item
+  audio.unlock();
   audio.play(`${island.id}_${culture.id}`);
 }
 

@@ -11,6 +11,7 @@ const PIN_SVG = `<svg viewBox="0 0 24 24" width="28" height="28" fill="rgba(255,
 const PIN_ACTIVE = `<svg viewBox="0 0 24 24" width="34" height="34" fill="rgba(251,191,36,.35)" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="#fbbf24" stroke="none"/></svg>`;
 
 function navigate(href) {
+  audio.unlock();
   audio.stop();
   transition.navigate(() => { window.location.hash = href; });
 }
@@ -22,16 +23,6 @@ export function renderMap() {
 
   app.innerHTML = `
     <div style="min-height:100vh;background:var(--bg);padding-top:64px;">
-
-      <!-- Title -->
-      <div class="anim-fade-down" style="text-align:center;padding:1.5rem 1rem .75rem;">
-        <h1 style="font-family:var(--font-serif);font-size:clamp(1.5rem,4vw,2.4rem);color:#fff;">
-          Peta <span style="color:#fbbf24;">Nusantara</span>
-        </h1>
-        <p style="color:var(--text-muted);font-size:.9rem;margin-top:.35rem;">
-          Arahkan kursor ke pulau untuk melihat ringkasan budaya, lalu klik untuk menjelajahi
-        </p>
-      </div>
 
       <!-- Map Scroll Wrapper (horizontal scroll on mobile) -->
       <div id="map-scroll" style="width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.5rem;">
@@ -60,14 +51,6 @@ export function renderMap() {
         </div>
       </div>
 
-      <!-- Legend -->
-      <div class="anim-fade-up" style="display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;padding:1.25rem 1rem 2rem;">
-        ${islandIds.map(id => `
-          <button class="legend-btn" data-id="${id}"
-                  style="padding:.45rem 1.1rem;border-radius:999px;border:1px solid rgba(96,165,250,.25);background:rgba(255,255,255,.05);color:rgba(147,197,253,.85);font-size:.85rem;cursor:pointer;transition:all .2s;">
-            ${ISLANDS[id].name}
-          </button>`).join('')}
-      </div>
     </div>
   `;
 
@@ -124,8 +107,8 @@ export function renderMap() {
     popup.innerHTML   = buildPopup(id);
     popup.style.display = 'block';
 
-    // Narrate island on hover
-    audio.play(`${id}_hover`);
+    // Narrate island on hover (debounced + fade-in to prevent collisions)
+    audio.playHover(`${id}_hover`);
   }
 
   function clearActive() {
@@ -138,6 +121,8 @@ export function renderMap() {
       el.querySelector('.hotspot-popup').style.display       = 'none';
     }
     activeId = null;
+    // Fade out hover audio smoothly
+    audio.stopHover();
   }
 
   document.querySelectorAll('.island-hotspot').forEach(el => {
@@ -150,20 +135,7 @@ export function renderMap() {
     el.addEventListener('touchend',   ()  => navigate(`#/indonesia/${id}`));
   });
 
-  document.querySelectorAll('.legend-btn').forEach(btn => {
-    const id = btn.dataset.id;
-    btn.addEventListener('mouseenter', () => {
-      btn.style.background = '#f59e0b';
-      btn.style.color      = '#fff';
-      btn.style.borderColor= '#f59e0b';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.background  = 'rgba(255,255,255,.05)';
-      btn.style.color       = 'rgba(147,197,253,.85)';
-      btn.style.borderColor = 'rgba(96,165,250,.25)';
-    });
-    btn.addEventListener('click', () => navigate(`#/indonesia/${id}`));
-  });
+
 
   // Auto-play map intro audio
   audio.play('map_intro');
