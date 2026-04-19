@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef, createContext, useContext } f
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { Home, ArrowLeft, Map } from "lucide-react";
 import { motion } from "motion/react";
-import { CloudTransition } from "./CloudTransition";
+import { GsapTransition } from "./GsapTransition";
 
 type NavigateFn = (to: string | number) => void;
 const CloudNavContext = createContext<NavigateFn>(() => {});
@@ -41,8 +41,8 @@ export function Layout() {
           }
         }
         // Small delay so the new page renders behind clouds before opening
-        setTimeout(() => setPhase("opening"), 120);
-      }, 950); // wait for clouds to fully cover screen
+        setTimeout(() => setPhase("opening"), 50);
+      }, 850); // wait for swipe to cover screen
       return () => clearTimeout(timer);
     }
 
@@ -51,7 +51,7 @@ export function Layout() {
         setPhase("idle");
         isTransitioning.current = false;
         pendingNav.current = null;
-      }, 1050); // wait for clouds to fully clear
+      }, 1000); // wait for wipe to uncover screen
       return () => clearTimeout(timer);
     }
   }, [phase, navigate]);
@@ -62,8 +62,8 @@ export function Layout() {
         className="min-h-screen flex flex-col"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
-        {/* Cloud overlay */}
-        <CloudTransition phase={phase} />
+        {/* Screen Wipe overlay */}
+        <GsapTransition phase={phase} />
 
         {!isHome && (
           <motion.nav
