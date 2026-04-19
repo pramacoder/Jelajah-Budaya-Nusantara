@@ -3,7 +3,13 @@ import { motion } from 'motion/react';
 import { useAuth } from '../auth/AuthContext';
 import { Trophy, Clock, Swords, Globe, ArrowRight, Play, BookOpen } from 'lucide-react';
 
-export function QuizLobby({ onStart }: { onStart: (mode: string) => void }) {
+interface QuizLobbyProps {
+  onStart: (mode: string) => void;
+  onCreateClassroom: () => void;
+  onJoinClassroom: (pin: string) => void;
+}
+
+export function QuizLobby({ onStart, onCreateClassroom, onJoinClassroom }: QuizLobbyProps) {
   const { user } = useAuth();
   const [roomCode, setRoomCode] = useState('');
 
@@ -55,10 +61,21 @@ export function QuizLobby({ onStart }: { onStart: (mode: string) => void }) {
           />
           <button 
             disabled={roomCode.length < 5}
-            className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 disabled:bg-gray-600 text-white rounded-lg font-medium transition flex items-center gap-2"
+            onClick={() => onJoinClassroom(roomCode)}
+            className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 disabled:bg-gray-600 text-white rounded-lg font-medium transition flex items-center gap-2 cursor-pointer"
           >
             Gabung Ruang <ArrowRight className="w-4 h-4" />
           </button>
+        </div>
+        
+        <div className="mt-4 pt-4 border-t border-indigo-400/20">
+           <p className="text-sm text-indigo-300/70 mb-3">Atau buat kelas Anda sendiri sebagai Host:</p>
+           <button 
+             onClick={onCreateClassroom}
+             className="px-6 py-2 bg-[#0a1628] hover:bg-indigo-900/50 border border-indigo-500/30 text-indigo-300 rounded-lg font-medium transition cursor-pointer"
+           >
+             + Buat Kelas Baru
+           </button>
         </div>
       </motion.div>
 
