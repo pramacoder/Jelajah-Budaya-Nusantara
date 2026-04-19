@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { Music, UtensilsCrossed, Shirt, Headphones, X, ArrowLeft } from "lucide-react";
-import { islands } from "./island-data";
-import type { CultureInfo } from "./island-data";
+import { getProvinceById } from "../data";
+import type { CultureInfo } from "../data/province-types";
 
 import { useCloudNav } from "./Layout";
 
@@ -33,7 +33,7 @@ export function IslandDetail() {
   const navigate = useCloudNav();
   const [selectedCulture, setSelectedCulture] = useState<CultureInfo | null>(null);
 
-  const island = islands[islandId || ""];
+  const island = getProvinceById(islandId || "");
 
   if (!island) {
     return (
