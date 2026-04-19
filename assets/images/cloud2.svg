@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300">
+  <defs>
+    <filter id="blur2" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <filter id="soft2" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <radialGradient id="cg2" cx="50%" cy="55%" r="65%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="65%" stop-color="#f8f8f8" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#eeeeee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Base -->
+  <ellipse cx="400" cy="210" rx="370" ry="80" fill="url(#cg2)" filter="url(#soft2)"/>
+  <!-- Puff clusters -->
+  <circle cx="150" cy="195" r="70" fill="white" filter="url(#soft2)" opacity="0.94"/>
+  <circle cx="260" cy="165" r="90" fill="white" filter="url(#soft2)" opacity="0.97"/>
+  <circle cx="370" cy="140" r="105" fill="white" filter="url(#soft2)"/>
+  <circle cx="490" cy="155" r="95" fill="white" filter="url(#soft2)" opacity="0.98"/>
+  <circle cx="600" cy="175" r="80" fill="white" filter="url(#soft2)" opacity="0.95"/>
+  <circle cx="680" cy="200" r="60" fill="white" filter="url(#soft2)" opacity="0.93"/>
+  <!-- Top accent puffs -->
+  <circle cx="360" cy="115" r="65" fill="white" filter="url(#blur2)"/>
+  <circle cx="250" cy="130" r="50" fill="white" filter="url(#blur2)" opacity="0.88"/>
+  <circle cx="470" cy="125" r="55" fill="white" filter="url(#blur2)" opacity="0.9"/>
+  <circle cx="550" cy="145" r="45" fill="white" filter="url(#blur2)" opacity="0.87"/>
+</svg>
