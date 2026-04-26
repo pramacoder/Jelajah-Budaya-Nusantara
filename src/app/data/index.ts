@@ -18,7 +18,13 @@ export const allProvinces: ProvinceData[] = [
 
 // Helper to find a province by its name or ID
 export const getProvinceById = (id: string): ProvinceData | undefined => {
-  return allProvinces.find(p => p.id.toLowerCase() === id.toLowerCase() || p.name.toLowerCase() === id.toLowerCase());
+  const normalizedId = id.toLowerCase().replace(/_/g, ' ').replace(/-/g, ' ');
+  return allProvinces.find(
+    (p) => 
+      p.id.toLowerCase() === normalizedId || 
+      p.name.toLowerCase() === normalizedId ||
+      p.id.toLowerCase().replace(/\s/g, '') === normalizedId.replace(/\s/g, '')
+  );
 };
 
 // Map of legacy island IDs to new provinces (for backward compatibility if needed)

@@ -30,11 +30,11 @@ export const useQuizDb = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchQuestions = async (limit: number = 10, category?: string): Promise<QuizQuestion[]> => {
+  const fetchQuestions = async (limit: number = 10, category?: string, shuffle: boolean = true): Promise<QuizQuestion[]> => {
     setLoading(true);
     setError(null);
     try {
-      let query = supabase.from('questions').select('*').eq('is_active', true);
+      let query = supabase.from('questions').select('*').eq('is_active', true).order('id');
       if (category) {
         query = query.eq('category', category);
       }
@@ -43,9 +43,10 @@ export const useQuizDb = () => {
       
       if (err) throw err;
       
-      // Shuffle questions
-      const shuffled = (data as QuizQuestion[]).sort(() => 0.5 - Math.random());
-      return shuffled;
+      if (shuffle) {
+        return (data as QuizQuestion[]).sort(() => 0.5 - Math.random());
+      }
+      return data as QuizQuestion[];
     } catch (err: any) {
       setError(err.message);
       return [];

@@ -2,15 +2,25 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { useAuth } from '../auth/AuthContext';
 import { Trophy, Clock, Swords, Globe, ArrowRight, Play, BookOpen } from 'lucide-react';
+import { QuizLeaderboard } from './QuizLeaderboard';
+import { QuizBadge } from './QuizBadge';
 
-export function QuizLobby({ onStart }: { onStart: (mode: string) => void }) {
+export function QuizLobby({ onStart, onJoinClassroom, onCreateClassroom }: { onStart: (mode: string) => void, onJoinClassroom: (code: string, name: string) => void, onCreateClassroom: () => void }) {
   const { user } = useAuth();
   const [roomCode, setRoomCode] = useState('');
+  const [nickname, setNickname] = useState('');
 
   const modes = [
     { id: 'quick', title: 'Quick Quiz', icon: <Clock className="w-6 h-6" />, desc: '10 Soal Acak, total 30 detik tiap soal.', color: 'from-blue-500 to-cyan-400' },
     { id: 'daily', title: 'Tantangan Harian', icon: <Swords className="w-6 h-6" />, desc: '5 Soal baru setiap hari. Dapatkan bonus Streak!', color: 'from-amber-400 to-orange-500' },
     { id: 'province', title: 'Kuis Provinsi', icon: <Globe className="w-6 h-6" />, desc: 'Uji pengetahuan secara spesifik per daerah.', color: 'from-emerald-400 to-green-500' },
+  ];
+
+  const myBadges: any[] = [
+    { id: '1', name: 'Pemula', description: 'Menyelesaikan kuis perdana', iconType: 'star', color: 'from-blue-400 to-cyan-500', isEarned: true, earnedAt: '2026-04-20' },
+    { id: '2', name: 'Ahli Jawa', description: 'Menjawab sempurna soal Jawa', iconType: 'award', color: 'from-amber-400 to-orange-500', isEarned: true, earnedAt: '2026-04-20' },
+    { id: '3', name: 'Geografi', description: 'Menjawab 50 soal geografi', iconType: 'target', color: 'from-emerald-400 to-green-500', isEarned: false },
+    { id: '4', name: 'Streak Api', description: '10 jawaban benar berturut-turut', iconType: 'zap', color: 'from-purple-400 to-violet-500', isEarned: false },
   ];
 
   return (
@@ -42,23 +52,51 @@ export function QuizLobby({ onStart }: { onStart: (mode: string) => void }) {
         transition={{ delay: 0.1 }}
         className="bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/30 rounded-2xl p-6 mb-8 text-center shadow-lg"
       >
-        <h3 className="text-xl font-bold text-white mb-2 font-serif">Classroom Mode</h3>
-        <p className="text-indigo-200/80 mb-4 text-sm">Masukkan kode PIN dari host untuk bermain kuis bersama 1 kelas. Skor terekam mandiri per room.</p>
-        <div className="flex justify-center flex-wrap gap-3">
-          <input 
-            type="text" 
-            placeholder="Kode 6 Digit..." 
-            value={roomCode}
-            onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-            maxLength={6}
-            className="px-4 py-3 bg-[#0a1628] border border-indigo-500/50 rounded-lg text-white font-mono tracking-widest outline-none focus:border-amber-400 text-center w-48"
-          />
-          <button 
-            disabled={roomCode.length < 5}
-            className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 disabled:bg-gray-600 text-white rounded-lg font-medium transition flex items-center gap-2"
-          >
-            Gabung Ruang <ArrowRight className="w-4 h-4" />
-          </button>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-left flex-1">
+            <h3 className="text-xl font-bold text-white mb-2 font-serif">Classroom Mode</h3>
+            <p className="text-indigo-200/80 text-sm mb-4">
+              Main bersama dalam satu kelas (Kahoot-style). Host mengontrol soal, peserta bersaing secara real-time!
+            </p>
+            {user && (
+              <button 
+                onClick={onCreateClassroom}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-medium transition flex items-center gap-2 shadow-lg shadow-purple-500/20"
+              >
+                <Swords className="w-4 h-4" /> Buat Room Baru (Host)
+              </button>
+            )}
+          </div>
+          
+          <div className="flex-1 bg-black/20 p-4 rounded-xl border border-white/5 flex flex-col gap-3">
+            {!user && (
+              <input 
+                type="text" 
+                placeholder="Nama Panggilan..." 
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                maxLength={15}
+                className="px-4 py-3 bg-[#0a1628] border border-indigo-500/50 rounded-lg text-white outline-none focus:border-amber-400 w-full"
+              />
+            )}
+            <div className="flex gap-2">
+              <input 
+                type="text" 
+                placeholder="Kode 6 Digit..." 
+                value={roomCode}
+                onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                maxLength={6}
+                className="px-4 py-3 bg-[#0a1628] border border-indigo-500/50 rounded-lg text-white font-mono tracking-widest outline-none focus:border-amber-400 text-center w-full uppercase"
+              />
+              <button 
+                disabled={roomCode.length < 5 || (!user && nickname.length < 3)}
+                onClick={() => onJoinClassroom(roomCode, nickname)}
+                className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 disabled:bg-gray-600 text-white rounded-lg font-medium transition flex items-center gap-2"
+              >
+                Gabung <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </motion.div>
 
@@ -85,6 +123,12 @@ export function QuizLobby({ onStart }: { onStart: (mode: string) => void }) {
             </div>
           </motion.button>
         ))}
+      </div>
+
+      {/* Leaderboard & Badges Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
+        <QuizLeaderboard />
+        <QuizBadge badges={myBadges} />
       </div>
     </div>
   );
